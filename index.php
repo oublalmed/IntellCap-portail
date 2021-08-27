@@ -91,7 +91,17 @@
             </div>
         </div>
     </section>
+    <br><br>
     <!-- //home page block -->
+    <section class="w3l-bottom py-5" style="background: rgb(2,0,36);background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(247,169,201,1) 17%, rgba(0,212,255,1) 100%);">
+        <CENTER>
+        <div class="container py-lg-4 ">
+            <h3 class="title-big"> 3D digital platform </h3><br>
+            <p style="color: black;">The 3D digital platform is a virtual space dedicated to the themes of the environment in relation to climate change and its impact on the planet. It is also an educational tool for raising awareness of the importance of protecting it against causes that disturb its natural balance.</p><br>
+            <a href="http://eco-plateforme.ma" class="btn btn-style btn-outline-primary  ">Check out the FM6E-INTELLCAP Platform</a>
+        </div>
+        </CENTER>
+    </section>    
     <!--/bottom-->
     <section class="w3l-bottom1 py-5">
         <div class="container py-md-5 py-sm-4 py-2">

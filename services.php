@@ -18,6 +18,8 @@
   <!-- Template CSS -->
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
+<!-- Start the session -->
+<?php session_start(); ?>
 
 <body>
   <!--header-->
@@ -179,7 +181,7 @@
                     </thead>
                     <tbody>
                     <?php
-                    if(isset($_SESSION['idUser']) && isset($_GET['typeUser'])=="Client"){
+                    if(isset($_SESSION['idUser'])){
                       //$idUser = $_SESSION['idUser'];
                       $getServices = mysqli_query($con, "SELECT * from users u , demandes d , services s where u.iduser = d.idUser and s.idService = d.idService");
                       while ($resD = mysqli_fetch_assoc($getServices)) {
@@ -192,7 +194,7 @@
                         <td><?php echo $resD['dateDmd']; ?></td>
                         <td><button type="button" class="btn btn-danger"><i class="fa fa-trash-o" aria-hidden="true"></i></button></td>
                       </tr>
-                    <?php  }} ?>                      
+                    <?php  } ?>                      
                     </tbody>
                   </table>
                 </div>
@@ -638,7 +640,12 @@
   <script src="assets/js/bootstrap.min.js"></script>
   <!-- //bootstrap-->
 
-
+<?php   
+}else{
+    //echo "makaynch session makayn id event";
+    echo '<script>alert("Veuillez créer un compte pour demander un service !");</script>';
+    header('location:signup.php');
+}
+?>
 </body>
-
 </html>

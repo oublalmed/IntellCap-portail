@@ -22,10 +22,30 @@
 <?php session_start(); ?>
 
 <body>
-  <!--header-->
-  <?php include 'header.php' ?>
-  <!--/header-->
-  <?php include 'connexion.php' ?>
+<!--header-->
+<?php include 'header.php' ?>
+<!--/header-->
+<?php include 'connexion.php' ?>
+
+<script>
+var select = document.getElementById('List');
+var value = select.options[select.selectedIndex].value;
+</script>
+
+<?php
+
+  if(isset($_POST['saveD'])){
+
+    $dateDemande = $_POST['dateD'];
+    $idService = 3;
+    $idUser = $_SESSION['idUser']; 
+    $needs = $_POST['needs'];
+    $insertIntoRes = mysqli_query($con,"INSERT into demandes values('','".$dateDemande."','".$needs."','".$idService."','".$idUser."') ");
+
+    echo "<script>alert('Thank you for your request . Welcome !');</script>";          
+  }      
+
+?>
 
   <section class="w3l-about-breadcrumb">
     <div class="breadcrumb-bg breadcrumb-bg-about py-5">
@@ -90,7 +110,7 @@
                       <div class="col-12 col-lg-12">
                         <div class="form-group">
                           <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span></span>
-                          <input class="form-control" name="registration_date" id="registration-date" type="date">
+                          <input class="form-control"  id="registration-date" type="date" name="dateD">
                         </div>
                       </div>
                       <!-- Form Group -->
@@ -145,7 +165,7 @@
                       </div>
                       <div class="col-12 col-lg-12">
                         <div class="form-group">
-                          <textarea name="needs" rows="5" cols="50" placeholder=" Your needs "></textarea>
+                          <textarea name="needs" rows="5" cols="50" placeholder=" Your needs " ></textarea>
                         </div>
                       </div>
                     </div>
@@ -182,8 +202,8 @@
                     <tbody>
                     <?php
                     if(isset($_SESSION['idUser'])){
-                      //$idUser = $_SESSION['idUser'];
-                      $getServices = mysqli_query($con, "SELECT * from users u , demandes d , services s where u.iduser = d.idUser and s.idService = d.idService");
+                      $idUser = $_SESSION['idUser'];
+                      $getServices = mysqli_query($con, "SELECT * from users u , demandes d , services s where u.iduser = d.idUser and s.idService = d.idService and d.idUser = '".$idUser."'");
                       while ($resD = mysqli_fetch_assoc($getServices)) {
                         
                     ?>                       
@@ -192,9 +212,9 @@
                         <td><?php echo $resD['libelleService']; ?></td>
                         <td><?php echo $resD['price']; ?></td>
                         <td><?php echo $resD['dateDmd']; ?></td>
-                        <td><button type="button" class="btn btn-danger"><i class="fa fa-trash-o" aria-hidden="true"></i></button></td>
+                        <td><button type="button" class="btn btn-danger"><i class="fa fa-trash-o" aria-hidden="true"></i></button><a href="?idDemaneSup='.$resD['idDemande'].'"></a></td>
                       </tr>
-                    <?php  } ?>                      
+                    <?php  }} ?>                      
                     </tbody>
                   </table>
                 </div>
@@ -205,29 +225,6 @@
       </div>
     </div>
   </section>
-  <?php
-  if (isset($_POST['saveD'])) {
-
-    $to = $_POST['EmailClient'];
-    $subject = "This is subject";
-
-    $message = "<b>This is HTML message.</b>";
-    $message .= "<h1>This is headline.</h1>";
-
-    $header = "From:mhmdoublal@gmail.com \r\n";
-    $header .= "Cc:mhmdoublal@gmail.com \r\n";
-    $header .= "MIME-Version: 1.0\r\n";
-    $header .= "Content-type: text/html\r\n";
-
-    $retval = mail($to, $subject, $message, $header);
-
-    if ($retval == true) {
-      echo '<script>alert("Email sent successfully !")</script>';
-    } else {
-      echo '<script>alert("Message could not be sent...")</script>';
-    }
-  }
-  ?>
   <section class="w3l-features-8" id="services">
     <!-- /features -->
     <div class="features py-5" id="services">
@@ -640,12 +637,6 @@
   <script src="assets/js/bootstrap.min.js"></script>
   <!-- //bootstrap-->
 
-<?php   
-}else{
-    //echo "makaynch session makayn id event";
-    echo '<script>alert("Veuillez créer un compte pour demander un service !");</script>';
-    header('location:signup.php');
-}
-?>
+
 </body>
 </html>

@@ -22,30 +22,30 @@
 <?php session_start(); ?>
 
 <body>
-<!--header-->
-<?php include 'header.php' ?>
-<!--/header-->
-<?php include 'connexion.php' ?>
+  <!--header-->
+  <?php include 'header.php' ?>
+  <!--/header-->
+  <?php include 'connexion.php' ?>
 
-<script>
-var select = document.getElementById('List');
-var value = select.options[select.selectedIndex].value;
-</script>
+  <script>
+    var select = document.getElementById('List');
+    var value = select.options[select.selectedIndex].value;
+  </script>
 
-<?php
+  <?php
 
-  if(isset($_POST['saveD'])){
+  if (isset($_POST['saveD'])) {
 
     $dateDemande = $_POST['dateD'];
-    $idService = 3;
-    $idUser = $_SESSION['idUser']; 
+    $idService = 5;
+    $idUser = $_SESSION['idUser'];
     $needs = $_POST['needs'];
-    $insertIntoRes = mysqli_query($con,"INSERT into demandes values('','".$dateDemande."','".$needs."','".$idService."','".$idUser."') ");
+    $insertIntoRes = mysqli_query($con, "INSERT into demandes values('','" . $dateDemande . "','" . $needs . "','" . $idService . "','" . $idUser . "') ");
 
-    echo "<script>alert('Thank you for your request . Welcome !');</script>";          
-  }      
+    echo "<script>alert('Thank you for your request . Welcome !');</script>";
+  }
 
-?>
+  ?>
 
   <section class="w3l-about-breadcrumb">
     <div class="breadcrumb-bg breadcrumb-bg-about py-5">
@@ -110,34 +110,28 @@ var value = select.options[select.selectedIndex].value;
                       <div class="col-12 col-lg-12">
                         <div class="form-group">
                           <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span></span>
-                          <input class="form-control"  id="registration-date" type="date" name="dateD">
+                          <input class="form-control" id="registration-date" type="date" name="dateD">
                         </div>
                       </div>
                       <!-- Form Group -->
                       <script>
                         function myFunction() {
                           var x = document.getElementById("List").value;
-                          if(x=="Aerospace"){
+                          if (x == "Aerospace") {
                             document.getElementById("price").value = "200K";
-                          }
-                          else if(x=="Water"){
+                          } else if (x == "Water") {
                             document.getElementById("price").value = "300K";
-                          }
-                          else if(x=="Automative"){
+                          } else if (x == "Automative") {
                             document.getElementById("price").value = "240K";
-                          }
-                          else if(x=="Smart building"){
+                          } else if (x == "Smart building") {
                             document.getElementById("price").value = "600K";
-                          }
-                          else if(x=="RESEARCH & TECHNOLOGY"){
+                          } else if (x == "RESEARCH & TECHNOLOGY") {
                             document.getElementById("price").value = "20K";
-                          }
-                          else if(x=="RESEARCH & TECHNOLOGY"){
+                          } else if (x == "RESEARCH & TECHNOLOGY") {
                             document.getElementById("price").value = "140K";
-                          }
-                          else{
+                          } else {
                             document.getElementById("price").value = "90K";
-                          }                         
+                          }
                         }
                       </script>
                       <div class="col-12 col-lg-12">
@@ -165,7 +159,7 @@ var value = select.options[select.selectedIndex].value;
                       </div>
                       <div class="col-12 col-lg-12">
                         <div class="form-group">
-                          <textarea name="needs" rows="5" cols="50" placeholder=" Your needs " ></textarea>
+                          <textarea name="needs" rows="5" cols="50" placeholder=" Your needs "></textarea>
                         </div>
                       </div>
                     </div>
@@ -178,6 +172,7 @@ var value = select.options[select.selectedIndex].value;
               </div>
             </div>
           </div>
+
           <!-- Large modal -->
           <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
@@ -200,21 +195,37 @@ var value = select.options[select.selectedIndex].value;
                       </tr>
                     </thead>
                     <tbody>
-                    <?php
-                    if(isset($_SESSION['idUser'])){
-                      $idUser = $_SESSION['idUser'];
-                      $getServices = mysqli_query($con, "SELECT * from users u , demandes d , services s where u.iduser = d.idUser and s.idService = d.idService and d.idUser = '".$idUser."'");
-                      while ($resD = mysqli_fetch_assoc($getServices)) {
-                        
-                    ?>                       
-                      <tr>                       
-                        <th scope="row"><?php echo $resD['idDemande']; ?></th>
-                        <td><?php echo $resD['libelleService']; ?></td>
-                        <td><?php echo $resD['price']; ?></td>
-                        <td><?php echo $resD['dateDmd']; ?></td>
-                        <td><button type="button" class="btn btn-danger"><i class="fa fa-trash-o" aria-hidden="true"></i></button><a href="?idDemaneSup='.$resD['idDemande'].'"></a></td>
-                      </tr>
-                    <?php  }} ?>                      
+                      <?php
+
+                      if (isset($_GET['idDemandeSup'])) {
+                        $idDemandeSup = $_GET['idDemandeSup'];
+                        $deleteDem = mysqli_query($con, "DELETE from demandes where idDemande='" . $idDemandeSup . "' ");
+                        if ($deleteDem) {
+                          echo "<script>alert('suppression de Demande avec succés');</script>";
+                        } else {
+                          echo "<script>alert('suppression de Demande échouées');</script>";
+                        }
+                      
+                      }
+                      ?>
+
+                      <?php
+
+                      if (isset($_SESSION['idUser'])) {
+                        $idUser = $_SESSION['idUser'];
+                        $getServices = mysqli_query($con, "SELECT * from users u , demandes d , services s where u.iduser = d.idUser and s.idService = d.idService and d.idUser = '" . $idUser . "'");
+                        while ($resD = mysqli_fetch_assoc($getServices)) {
+
+                      ?>
+                          <tr>
+                            <th scope="row"><?php echo $resD['idDemande']; ?></th>
+                            <td><?php echo $resD['libelleService']; ?></td>
+                            <td><?php echo $resD['price']; ?></td>
+                            <td><?php echo $resD['dateDmd']; ?></td>
+                            <td><a href="?idDemandeSup=<?php echo $resD['idDemande']; ?>"><button type="button" class="btn btn-danger"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button></a></td>
+                          </tr>
+                      <?php  }
+                      } ?>
                     </tbody>
                   </table>
                 </div>
@@ -250,7 +261,8 @@ var value = select.options[select.selectedIndex].value;
           </div>
           <div class="float-top col-lg-3 col-md-6 mt-lg-0 mt-5">
             <a href="#url"><img src="assets/images/auto.jpg" class="img-responsive" alt=""></a>
-            <div class="float-lt feature-gd"><br>
+            <div class="float-l
+            t feature-gd"><br>
               <h3><a href="#url">Automative</a> </h3>
               <p> INTELLCAP is initiating a new approach for R&T projects.</p><br><br>
               <a href="#url" class="read">Read more</a>
@@ -639,4 +651,5 @@ var value = select.options[select.selectedIndex].value;
 
 
 </body>
+
 </html>
